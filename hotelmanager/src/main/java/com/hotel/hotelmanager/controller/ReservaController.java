@@ -31,7 +31,7 @@ public class ReservaController {
     private static final LocalTime HORARIO_CHECKIN = LocalTime.of(14, 0);
     private static final LocalTime HORARIO_CHECKOUT = LocalTime.of(12, 0);
 
-    // Listar todas as reservas
+    // Listar 
     @GetMapping
     public List<Reserva> listarTodos() {
         return reservaRepository.findAll();
