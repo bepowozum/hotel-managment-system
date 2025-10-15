@@ -59,6 +59,34 @@ Se desejar executar com proxy para backend (o projeto já tem `proxy.conf.json`)
 
 ## Testes Unitários
 
+Os testes unitários do backend foram implementados utilizando **JUnit 5** e **Spring Boot Test**, garantindo a verificação dos principais fluxos das controllers e serviços.  
+A cobertura foi analisada com **JaCoCo**, com os seguintes resultados:
+
+| Pacote / Módulo                      | Cobertura de Instruções | Missed Instructions | Missed Branches |
+|-------------------------------------|--------------------------|---------------------|-----------------|
+| `com.hotel.hotelmanager`            | 91%                      | —                   | —               |
+| `com.hotel.hotelmanager.controller` | 85%                      | —                   | —               |
+| `com.hotel.hotelmanager.model`      | 0%                       | 100% missed         | —               |
+| `com.hotel.hotelmanager.exception`  | 0%                       | 100% missed         | —               |
+| **Total Geral**                     | **89%**                  | **53 / 491 missed** | **67%**         |
+
+> ℹ️ As camadas **model** e **exception** não possuem testes diretos, pois consistem em classes simples de dados e exceções tratadas pelas controllers.
+
+---
+
+### ▶️ Executando os testes
+
+Para rodar os testes e gerar o relatório de cobertura:
+
+```bash
+cd hotelmanager
+mvn clean verify
+```
+
+O relatório HTML será gerado em:
+```bash
+target/site/jacoco/index.html
+```
 ## Contato / Suporte
 
 Para dúvidas sobre a execução da aplicação, verificar endpoints ou problemas de conexão, basta abrir o console do navegador ou o terminal do backend e observar os logs.
