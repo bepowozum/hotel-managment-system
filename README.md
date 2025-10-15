@@ -70,7 +70,7 @@ A cobertura foi analisada com **JaCoCo**, com os seguintes resultados:
 | `com.hotel.hotelmanager.exception`  | 0%                       | 100% missed         | —               |
 | **Total Geral**                     | **89%**                  | **53 / 491 missed** | **67%**         |
 
-> ℹ️ As camadas **model** e **exception** não possuem testes diretos, pois consistem em classes simples de dados e exceções tratadas pelas controllers.
+<img width="1910" height="247" alt="Captura de tela 2025-10-15 023017" src="https://github.com/user-attachments/assets/fe037ff1-5129-4d1f-b380-30de8c875e03" />
 
 ---
 
