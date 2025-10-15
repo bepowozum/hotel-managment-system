@@ -9,7 +9,7 @@ Aplicação para gestão de hóspedes em hotel — reservas, check-in e checkout
 ## Pré-requisitos
 
 * Git
-* Java 25
+* Java 21
 * Maven (ou usar o wrapper `./mvnw` fornecido)
 * Node.js (v22.20.0) e npm
 * Angular CLI (opcional, `npx @angular/cli@14` funciona)
