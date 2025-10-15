@@ -87,6 +87,51 @@ O relatório HTML será gerado em:
 ```bash
 target/site/jacoco/index.html
 ```
+
+## Funcionamento da Aplicação
+
+Com o banco de dados em Docker ligado e os comandos iniciando nos respectivos diretórios de backend e frontend:
+
+```bash
+mvn spring-boot:run
+npm start
+```
+
+A aplicação estará gerando na porta:
+
+```bash
+http://localhost:4200/hospedes
+```
+
+A Navegação possui 3 opções marcadas por botões, a de Hóspedes, a de Reservas e a de Cadastro de Hóspede
+
+### Hóspede
+* Listagem de todos os Hóspedes Cadastrados no Sistema;
+* Filtro de Busca por Nome, Documento ou por Telefone; O filtro retorna vazio caso seja inserido um valor inválido
+* A busca retorna os dados principais apenas do Hóspede
+
+<img width="1889" height="936" alt="image" src="https://github.com/user-attachments/assets/f91827b9-4a36-4190-8f07-a6702b955ee8" />
+
+### Cadastro de Hóspede
+* Inserir os dados do hóspede, com Nome, Número de Documento e Número de Telefone, Um Check-Box se ele possui um carro;
+* Ao clicar em cadastrar, uma segunda seção se abre, permitindo inserir a data de entrada e a data de saída do Hóspede;
+* Alerta indica quando o Hóspede foi criado e quando Reserva foi criado.
+
+<img width="1882" height="872" alt="image" src="https://github.com/user-attachments/assets/edfdbc08-1792-40ad-a9b3-e1c684316513" />
+
+### Reservas
+* A lista de Reservas apresenta o nome, as datas marcadas de Check-In e de Check-Out;
+* Ao clicar em "Selecionar" em Ações, uma aba lateral com todas as informações e detalhes do Hóspede e da Reserva é disposto. Permite realizar o Check-In e o Check-Out com base no Status do hóspede;
+* Três STATUS para hóspedes:
+    - Reservado: Hóspede criado;
+    - Hospedado: Realizado Check-In;
+    - Finalizado: Realizado Check-Out;
+* Ao confirmar o Check-Out, o campo de Hora de Check-Out, é habilitado para edição. Caso o horário selecionado seja pós 12:00, ele indica a cobrança de uma multa com um alerta visual e um alert antes de confirmar o check-out.
+
+<img width="1882" height="872" alt="image" src="https://github.com/user-attachments/assets/f3fdf8c7-c10a-4924-8e19-ab7801317766" />
+<img width="1897" height="935" alt="Captura de tela 2025-10-15 100053" src="https://github.com/user-attachments/assets/58d7b8a9-3979-4e57-b992-52049913eb1d" />
+<img width="1898" height="938" alt="Captura de tela 2025-10-15 100102" src="https://github.com/user-attachments/assets/8879615a-ffb0-4d81-b4d1-b0d159857377" />
+
 ## Contato / Suporte
 
 Para dúvidas sobre a execução da aplicação, verificar endpoints ou problemas de conexão, basta abrir o console do navegador ou o terminal do backend e observar os logs.
