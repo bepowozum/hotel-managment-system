@@ -87,7 +87,6 @@ import { of } from 'rxjs';
       <p *ngIf="mensagemSucesso" class="mensagem">{{ mensagemSucesso }}</p>
       <p *ngIf="mensagemErro" class="mensagem alerta">{{ mensagemErro }}</p>
 
-      <!-- Formulário de reserva -->
       <app-reserva-form
         *ngIf="hospedeCadastrado"
         [hospede]="hospedeCadastrado"

@@ -1,9 +1,8 @@
-// src/app/features/reservas/checkin-checkout.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReservaService, Reserva } from '../../core/service/reserva.service';
-import { catchError, tap, switchMap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
@@ -27,7 +26,7 @@ import { of } from 'rxjs';
       <button class="btn primary" (click)="carregarReservas()">Atualizar</button>
     </div>
 
-    <!-- Tabela de reservas -->
+    <!-- Reservas -->
     <div class="reservas-lista">
       <table *ngIf="reservasFiltradas.length > 0; else vazio">
         <thead>
@@ -61,7 +60,7 @@ import { of } from 'rxjs';
       <p class="vazio">Nenhuma reserva encontrada.</p>
     </ng-template>
 
-    <!-- Painel lateral -->
+    <!-- Checkin e Checkout -->
     <div class="painel-lateral" *ngIf="reservaSelecionada">
       <h3>Detalhes da Reserva</h3>
 
@@ -76,12 +75,11 @@ import { of } from 'rxjs';
         <p><strong>Check-in:</strong> {{ reservaSelecionada.dataCheckin }}</p>
         <p><strong>Check-out:</strong> {{ reservaSelecionada.dataCheckout }}</p>
 
-        <label>
-    Hora Check-out:
-    <input type="time" [(ngModel)]="selectedHoraCheckout" 
+      <label>Hora Check-out:
+        <input type="time" [(ngModel)]="selectedHoraCheckout" 
            [disabled]="reservaSelecionada.status === 'RESERVADO'" />
-  </label>
-      </div>
+      </label>
+    </div>
 
       <div class="status-detalhe">
         <p>Status:</p>
@@ -169,13 +167,10 @@ export class CheckinCheckoutComponent implements OnInit {
   filtroTexto = '';
   mensagem = '';
   carregando = false;
-
-  // campos do painel
   selectedHoraCheckout = '12:00';
   dataCheckin = '';
   dataCheckout = '';
 
-  // breakdown calculado
   breakdown: {
     noites: number;
     diarias: Array<{ data: string; tipo: 'Dia útil' | 'Fim de semana'; valor: number }>;
@@ -217,7 +212,6 @@ export class CheckinCheckoutComponent implements OnInit {
   filtrarReservas() {
     const txt = (this.filtroTexto || '').trim().toLowerCase();
 
-    // aplica filtro por status primeiro
     let lista = this.filtroStatus ? this.reservas.filter(r => r.status === this.filtroStatus) : [...this.reservas];
 
     // aplica filtro textual (nome / documento / telefone)
@@ -237,7 +231,6 @@ export class CheckinCheckoutComponent implements OnInit {
   trackById = (_: number, r: Reserva) => r.id;
 
   selecionarReserva(reserva: Reserva) {
-    // cópia simples para edição local do painel (não muta lista até salvar)
     this.reservaSelecionada = { ...reserva };
     this.dataCheckin = this.reservaSelecionada.dataCheckin || '';
     this.dataCheckout = this.reservaSelecionada.dataCheckout || '';
@@ -250,7 +243,6 @@ export class CheckinCheckoutComponent implements OnInit {
     this.reservaSelecionada = null;
     this.breakdown = null;
     this.mensagem = '';
-    // limpa filtros auxiliares se quiser
   }
 
   private formatTime(t?: string): string {
@@ -313,13 +305,9 @@ export class CheckinCheckoutComponent implements OnInit {
     return (h > 12) || (h === 12 && m > 0);
   }
 
-  // ===== Ações =====
-
   confirmarCheckin() {
     if (!this.reservaSelecionada) return;
 
-    // Antes de confirmar check-in, não usamos horaCheckout (campo fica disabled enquanto reserva está RESERVADO)
-    // opcional: alerta caso backend rejeite se for antes de 14:00 (mas aqui fixamos lógica do front)
     const id = this.reservaSelecionada.id!;
     this.reservaSvc.checkin(id).pipe(
       tap(res => {
@@ -339,17 +327,14 @@ export class CheckinCheckoutComponent implements OnInit {
     if (!this.reservaSelecionada) return;
 
     const id = this.reservaSelecionada.id!;
-    // manter hora fixa de checkout no backend se preferir, mas aqui passamos a hora atual selecionada
+
     const horaCheckout = `${this.selectedHoraCheckout}:00`;
 
     if (this.isCheckoutAfterAllowed()) {
       const ok = confirm('Check-out após 12:00 aplicará multa de 50% sobre o subtotal. Deseja prosseguir?');
       if (!ok) return;
     }
-
-    // Atualiza horaCheckout (opcional) e chama endpoint de checkout para cálculo final.
-    // Se o seu backend aceita PUT /reservas/{id} para atualizar horaCheckout, você pode usar reservaSvc.atualizar antes do checkout.
-    // Aqui chamamos direto o endpoint de checkout com body opcional (conforme seu service implementado).
+    
     this.reservaSvc.checkout(id, { horaCheckout }).pipe(
       tap(res => {
         this.mensagem = `Check-out efetuado para ${this.reservaSelecionada?.hospede.nome}. Total: R$ ${res.valorTotal?.toFixed(2) ?? '0.00'}`;

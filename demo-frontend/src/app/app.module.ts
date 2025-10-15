@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 // Componentes standalone
-import { HospedesComponent } from './features/hospedes/hospedes.component';
+import { HospedesComponent } from './components/hospedes/hospedes.component';
 import { ReservasListComponent } from './components/reservas-list/reservas-list.component';
 import { ReservaFormComponent } from './components/reserva-form/reserva-form.component';
 import { CheckinCheckoutComponent } from './components/checkin-checkout/checkin-checkout.component';

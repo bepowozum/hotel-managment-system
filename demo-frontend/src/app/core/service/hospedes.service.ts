@@ -32,13 +32,13 @@ export class HospedesService {
     return this.http.post<Hospede>(this.baseUrl, h);
   }
 
-  atualizar(id: number, h: Hospede): Observable<Hospede> {
-    return this.http.put<Hospede>(`${this.baseUrl}/${id}`, h);
-  }
+  // atualizar(id: number, h: Hospede): Observable<Hospede> {
+  //   return this.http.put<Hospede>(`${this.baseUrl}/${id}`, h);
+  // }
 
-  deletar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
-  }
+  // deletar(id: number): Observable<void> {
+  //   return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  // }
 
   buscar(termo: string): Observable<Hospede[]> {
   return this.http.get<Hospede[]>(`${this.baseUrl}?filtro=${encodeURIComponent(termo)}`);

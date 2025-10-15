@@ -185,7 +185,6 @@ export class ReservaFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['hospede']) {
-      // reset quando o hóspede muda / abre formulário
       this.dataEntrada = '';
       this.dataSaida = '';
       this.valorEstimado = null;
@@ -207,9 +206,8 @@ export class ReservaFormComponent implements OnChanges {
     const taxaCarroSemana = 15;
     const taxaCarroFimSemana = 20;
 
-    // percorre noites: do dia de entrada até dia anterior ao checkout
     for (let d = new Date(entrada); d < saida; d.setDate(d.getDate() + 1)) {
-      const dia = d.getDay(); // 0 domingo, 6 sábado
+      const dia = d.getDay();
       const ehFimSemana = dia === 0 || dia === 6;
       total += ehFimSemana ? diariaFimSemana : diariaSemana;
       if (this.hospede?.possuiCarro) {
@@ -234,8 +232,6 @@ export class ReservaFormComponent implements OnChanges {
 
   criarReserva() {
     if (!this.hospede) return;
-
-    // validação simples
     if (!this.dataEntrada || !this.dataSaida) {
       this.mensagemErro = true;
       this.mensagem = 'Preencha entrada e saída.';
@@ -251,13 +247,10 @@ export class ReservaFormComponent implements OnChanges {
 
     const valorCalculado = this.calcularValorInterno();
 
-    // montamos o payload em conformidade com o backend
-    // backend espera reserva.hospede.id presente -> aqui enviamos o objeto completo (ok)
     const payload: Partial<Reserva> = {
-      hospede: this.hospede as any,           // enviar objeto (inclui id)
+      hospede: this.hospede as any,
       dataCheckin: this.dataEntrada,
       dataCheckout: this.dataSaida,
-      // valores padrão de horário conforme regras (pode ser alterado depois via checkin/checkout)
       horaCheckin: '14:00:00',
       horaCheckout: '12:00:00',
       status: 'RESERVADO',
@@ -269,7 +262,6 @@ export class ReservaFormComponent implements OnChanges {
         tap((res) => {
           this.mensagemErro = false;
           this.mensagem = `Reserva criada com sucesso para ${this.hospede.nome}. Valor: R$ ${valorCalculado.toFixed(2)}`;
-          // limpa inputs mas mantém o hóspede visível
           this.dataEntrada = '';
           this.dataSaida = '';
           this.valorEstimado = null;
@@ -277,7 +269,6 @@ export class ReservaFormComponent implements OnChanges {
         catchError(err => {
           console.error('Erro ao criar reserva:', err);
           this.mensagemErro = true;
-          // tenta extrair mensagem do backend
           this.mensagem = err?.error?.message || 'Erro ao criar reserva.';
           return of(null);
         })

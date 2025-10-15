@@ -95,7 +95,7 @@ import { HospedesService, Hospede } from '../../core/service/hospedes.service';
     .card-hospede {
       padding: 14px;
       border-radius: 8px;
-      background: linear-gradient(135deg, #e3f2fd, #f0f4c3);
+      background: white;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
       transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -148,7 +148,7 @@ export class HospedesComponent implements OnInit {
         )
       : this.hospedes;
   }
-
+  
   limpar() {
     this.filtro = '';
     this.hospedesFiltrados = this.hospedes;
