@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Aplicação para gestão de hóspedes em hotel — reservas, check-in, checkout e cobrança.
+Aplicação para gestão de hóspedes em hotel — reservas, check-in e checkout.
 
 ---
 
@@ -13,7 +13,7 @@ Aplicação para gestão de hóspedes em hotel — reservas, check-in, checkout 
 * Maven (ou usar o wrapper `./mvnw` fornecido)
 * Node.js (recomenda-se Node 16 LTS ou compatível com Angular 14) e npm
 * Angular CLI (opcional, `npx @angular/cli@14` funciona)
-* Docker (opcional, recomendado para PostgreSQL se desejar rodar localmente em container)
+* Docker (recomendado para PostgreSQL se desejar rodar localmente em container)
 * Navegador moderno (Chrome/Edge) com suporte a headless para testes unitários do frontend
 
 ---
