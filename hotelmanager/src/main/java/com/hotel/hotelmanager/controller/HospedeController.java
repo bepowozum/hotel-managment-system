@@ -25,6 +25,7 @@ public class HospedeController {
         return hospedeRepository.save(hospede);
     }
 
+    // Busca
     @GetMapping("/buscar")
     public List<Hospede> buscar(@RequestParam String filtro) {
         return hospedeRepository

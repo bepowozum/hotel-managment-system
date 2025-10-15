@@ -9,8 +9,6 @@ const routes: Routes = [
   { path: 'hospedes', component: HospedesComponent },
   { path: 'hospedes/cadastro', component: HospedeFormComponent },
   { path: 'reservas/check', component: CheckinCheckoutComponent },
-  // { path: '', pathMatch: 'full', redirectTo: 'hospedes' },
-  // { path: '**', redirectTo: 'hospedes' }
 ];
 
 @NgModule({

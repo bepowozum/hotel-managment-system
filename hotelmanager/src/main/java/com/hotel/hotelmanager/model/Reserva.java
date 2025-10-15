@@ -22,7 +22,6 @@ public class Reserva {
     private String status = "RESERVADO";
     private Double valorTotal;
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Hospede getHospede() { return hospede; }

@@ -73,7 +73,7 @@ public class ReservaController {
         return reservaRepository.findByStatus(status);
     }
 
-    // CHECK-IN
+    // Check-in
     @PutMapping("/checkin/{id}")
     public Reserva realizarCheckin(@PathVariable Long id) {
         Reserva reserva = reservaRepository.findById(id)
@@ -94,7 +94,7 @@ public class ReservaController {
         return reservaRepository.save(reserva);
     }
 
-    // CHECK-OUT
+    // Check-out
     @PutMapping("/checkout/{id}")
     public Reserva realizarCheckout(@PathVariable Long id) {
         Reserva reserva = reservaRepository.findById(id)
