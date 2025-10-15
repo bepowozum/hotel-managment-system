@@ -9,16 +9,46 @@ Aplicação para gestão de hóspedes em hotel — reservas, check-in e checkout
 ## Pré-requisitos
 
 * Git
-* Java 11 ou superior (recomenda-se Java 17 para Spring Boot 3.x)
+* Java 25
 * Maven (ou usar o wrapper `./mvnw` fornecido)
-* Node.js (recomenda-se Node 16 LTS ou compatível com Angular 14) e npm
+* Node.js (v22.20.0) e npm
 * Angular CLI (opcional, `npx @angular/cli@14` funciona)
 * Docker (recomendado para PostgreSQL se desejar rodar localmente em container)
 * Navegador moderno (Chrome/Edge) com suporte a headless para testes unitários do frontend
+* Postman
 
 ---
 
 ## Banco de dados (PostgreSQL)
+
+- Necessário ter o Docker instalado, segue documentação para intalação do Docker: https://docs.docker.com/engine/install/
+- Vá no diretório raíz do projeto do back-end e execute o seguite comando: docker compose up -d
+- Após rodar o comando do docker, o banco irá subir em um container.
+- Acessar o gerenciador de banco de dados que estiver utilizando, Preferência: pgAdmin e rodar as seguintes queries para criação das tabelas:
+
+```bash
+CREATE TABLE hospede (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    documento VARCHAR(20) UNIQUE NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    possui_carro BOOLEAN DEFAULT FALSE
+);
+```
+
+```bash
+CREATE TABLE reserva (
+    id SERIAL PRIMARY KEY,
+    hospede_id INT NOT NULL,
+    data_checkin DATE NOT NULL,
+    hora_checkin TIME,
+    data_checkout DATE,
+    hora_checkout TIME,
+    status VARCHAR(20) DEFAULT 'RESERVADO',
+    valor_total DECIMAL(10,2),
+    FOREIGN KEY (hospede_id) REFERENCES hospede(id)
+);
+```
 
 O projeto backend espera um PostgreSQL com as credenciais (padrão em `src/main/resources/application.properties`):
 
