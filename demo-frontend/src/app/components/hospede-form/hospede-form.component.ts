@@ -201,7 +201,7 @@ export class HospedeFormComponent {
         tap(res => {
           this.mensagemSucesso = `Hóspede ${res.nome} cadastrado com sucesso!`;
           this.mensagemErro = '';
-          this.hospedeCadastrado = res; // 👉 exibe o form de reserva abaixo
+          this.hospedeCadastrado = res; // Formulario de Reserva
         }),
         catchError(err => {
           console.error('Erro ao cadastrar hóspede:', err);

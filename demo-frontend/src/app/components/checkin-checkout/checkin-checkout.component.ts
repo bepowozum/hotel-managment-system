@@ -239,12 +239,6 @@ export class CheckinCheckoutComponent implements OnInit {
     this.mensagem = '';
   }
 
-  fecharPainel() {
-    this.reservaSelecionada = null;
-    this.breakdown = null;
-    this.mensagem = '';
-  }
-
   private formatTime(t?: string): string {
     if (!t) return '12:00';
     return t.length >= 5 ? t.substring(0,5) : t;
@@ -305,47 +299,55 @@ export class CheckinCheckoutComponent implements OnInit {
     return (h > 12) || (h === 12 && m > 0);
   }
 
-  confirmarCheckin() {
-    if (!this.reservaSelecionada) return;
+confirmarCheckin() {
+  if (!this.reservaSelecionada) return;
 
-    const id = this.reservaSelecionada.id!;
-    this.reservaSvc.checkin(id).pipe(
-      tap(res => {
-        this.mensagem = `Check-in efetuado para ${this.reservaSelecionada?.hospede.nome}.`;
-        this.carregarReservas();
-        this.fecharPainel();
-      }),
-      catchError(err => {
-        console.error('Erro check-in:', err);
-        this.mensagem = err?.error?.message || 'Erro ao efetuar check-in';
-        return of(null);
-      })
-    ).subscribe();
+  const id = this.reservaSelecionada.id!;
+  this.reservaSvc.checkin(id).pipe(
+    tap(res => {
+      this.mensagem = `Check-in efetuado para ${res.hospede.nome}.`; // define mensagem primeiro
+      this.carregarReservas();
+      this.fecharPainel(false); // passa falso para não zerar a mensagem
+    }),
+    catchError(err => {
+      console.error('Erro check-in:', err);
+      this.mensagem = err?.error?.message || 'Erro ao efetuar check-in';
+      return of(null);
+    })
+  ).subscribe();
+}
+
+confirmarCheckout() {
+  if (!this.reservaSelecionada) return;
+
+  const id = this.reservaSelecionada.id!;
+  const horaCheckout = `${this.selectedHoraCheckout}:00`;
+
+  if (this.isCheckoutAfterAllowed()) {
+    const ok = confirm('Check-out após 12:00 aplicará multa de 50% sobre o subtotal. Deseja prosseguir?');
+    if (!ok) return;
   }
 
-  confirmarCheckout() {
-    if (!this.reservaSelecionada) return;
+  this.reservaSvc.checkout(id, { horaCheckout }).pipe(
+    tap(res => {
+      this.mensagem = `Check-out efetuado para ${res.hospede.nome}. Total: R$ ${res.valorTotal?.toFixed(2) ?? '0.00'}`;
+      this.carregarReservas();
+      this.fecharPainel(false); // não zera mensagem
+    }),
+    catchError(err => {
+      console.error('Erro checkout:', err);
+      this.mensagem = err?.error?.message || 'Erro ao efetuar check-out';
+      return of(null);
+    })
+  ).subscribe();
+}
 
-    const id = this.reservaSelecionada.id!;
-
-    const horaCheckout = `${this.selectedHoraCheckout}:00`;
-
-    if (this.isCheckoutAfterAllowed()) {
-      const ok = confirm('Check-out após 12:00 aplicará multa de 50% sobre o subtotal. Deseja prosseguir?');
-      if (!ok) return;
-    }
-    
-    this.reservaSvc.checkout(id, { horaCheckout }).pipe(
-      tap(res => {
-        this.mensagem = `Check-out efetuado para ${this.reservaSelecionada?.hospede.nome}. Total: R$ ${res.valorTotal?.toFixed(2) ?? '0.00'}`;
-        this.carregarReservas();
-        this.fecharPainel();
-      }),
-      catchError(err => {
-        console.error('Erro checkout:', err);
-        this.mensagem = err?.error?.message || 'Erro ao efetuar check-out';
-        return of(null);
-      })
-    ).subscribe();
+// Ajuste no fecharPainel
+fecharPainel(resetMensagem = true) {
+  this.reservaSelecionada = null;
+  this.breakdown = null;
+  if (resetMensagem) {
+    this.mensagem = '';
   }
+}
 }
